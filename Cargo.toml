@@ -1,5 +1,5 @@
 [package]
-name = "logic_gate_simulator"
+name = "logic_circuit_simulator"
 version = "0.1.0"
 authors = ["remtori <lqvu99@gmail.com>"]
 edition = "2018"
