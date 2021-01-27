@@ -106,11 +106,11 @@ impl Interpreter {
                 pins[(out_offset + conn.output_offset) as usize] =
                     pins[(inp_offset + conn.input_offset) as usize];
 
-                println!(
-                    "Assign pin {} to pin {}",
-                    inp_offset + conn.input_offset,
-                    out_offset + conn.output_offset
-                );
+                // println!(
+                //     "Assign pin {} to pin {}",
+                //     inp_offset + conn.input_offset,
+                //     out_offset + conn.output_offset
+                // );
 
                 circuit_desc_queue
                     .push_front((*type_map.get(&conn.output_uid).unwrap(), conn.output_uid));
