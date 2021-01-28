@@ -46,26 +46,12 @@ pub mod circuit {
 
             circuit_library.insert(
                 Interpreter::AND_GATE,
-                LogicCircuit {
-                    tid: Interpreter::AND_GATE,
-                    pin_count: 3,
-                    out_offset: 2,
-                    truth_table: Option::Some(vec![0, 0, 0, 1]),
-                    children: HashMap::new(),
-                    connections: Vec::new(),
-                },
+                LogicCircuit::from_truth_table(Interpreter::AND_GATE, 2, 1, vec![0, 0, 0, 1]),
             );
 
             circuit_library.insert(
                 Interpreter::NOT_GATE,
-                LogicCircuit {
-                    tid: Interpreter::NOT_GATE,
-                    pin_count: 2,
-                    out_offset: 1,
-                    truth_table: Option::Some(vec![1, 0]),
-                    children: HashMap::new(),
-                    connections: Vec::new(),
-                },
+                LogicCircuit::from_truth_table(Interpreter::NOT_GATE, 1, 1, vec![1, 0]),
             );
 
             Interpreter { circuit_library }
@@ -262,6 +248,7 @@ pub mod circuit {
     #[derive(Debug)]
     pub struct LogicCircuit {
         tid: u32,
+        next_uid: u32,
         pin_count: u32,
         out_offset: u32,
         truth_table: Option<Vec<usize>>,
@@ -273,6 +260,7 @@ pub mod circuit {
         pub fn new(type_id: TID, input_pin_count: u32, output_pin_count: u32) -> LogicCircuit {
             LogicCircuit {
                 tid: type_id,
+                next_uid: 1,
                 pin_count: input_pin_count + output_pin_count,
                 out_offset: input_pin_count,
                 truth_table: Option::None,
@@ -281,8 +269,27 @@ pub mod circuit {
             }
         }
 
-        pub fn add(&mut self, circuit_uid: UID, circuit_type_id: TID) {
-            self.children.insert(circuit_uid, circuit_type_id);
+        pub fn from_truth_table(
+            type_id: u32,
+            input_pin_count: u32,
+            output_pin_count: u32,
+            truth_table: Vec<usize>,
+        ) -> LogicCircuit {
+            LogicCircuit {
+                tid: type_id,
+                next_uid: 1,
+                pin_count: input_pin_count + output_pin_count,
+                out_offset: input_pin_count,
+                truth_table: Option::Some(truth_table),
+                children: HashMap::new(),
+                connections: Vec::new(),
+            }
+        }
+
+        pub fn add(&mut self, circuit_type_id: TID) -> UID {
+            self.next_uid += 1;
+            self.children.insert(self.next_uid, circuit_type_id);
+            self.next_uid
         }
 
         pub fn add_connection(
@@ -299,6 +306,8 @@ pub mod circuit {
                 output_offset,
             ));
         }
+
+        pub fn tick(&self, context: &Context) {}
     }
 
     impl std::cmp::PartialEq for LogicCircuit {

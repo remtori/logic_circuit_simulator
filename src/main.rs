@@ -4,8 +4,8 @@ use circuit::circuit::*;
 fn main() {
     const NAND_GATE: TID = 3;
     let mut nand_gate = LogicCircuit::new(NAND_GATE, 2, 1);
-    nand_gate.add(2, Interpreter::AND_GATE);
-    nand_gate.add(3, Interpreter::NOT_GATE);
+    nand_gate.add(Interpreter::AND_GATE);
+    nand_gate.add(Interpreter::NOT_GATE);
     nand_gate.add_connection(1, 0, 2, 0);
     nand_gate.add_connection(1, 1, 2, 1);
     nand_gate.add_connection(2, 2, 3, 0);
@@ -22,9 +22,9 @@ fn main() {
 
     const OR_GATE: TID = 4;
     let mut or_gate = LogicCircuit::new(OR_GATE, 2, 1);
-    or_gate.add(2, NAND_GATE);
-    or_gate.add(3, NAND_GATE);
-    or_gate.add(4, NAND_GATE);
+    or_gate.add(NAND_GATE);
+    or_gate.add(NAND_GATE);
+    or_gate.add(NAND_GATE);
     or_gate.add_connection(1, 0, 2, 0);
     or_gate.add_connection(1, 0, 2, 1);
     or_gate.add_connection(1, 1, 3, 0);
