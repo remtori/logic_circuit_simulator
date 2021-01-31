@@ -1,4 +1,5 @@
 pub mod circuit {
+
     use std::collections::{HashMap, VecDeque};
 
     pub type TID = u32; // Type Identifier
@@ -178,7 +179,7 @@ pub mod circuit {
             for conn in circuit.connections.iter() {
                 connection_map
                     .entry(conn.input_uid)
-                    .or_insert(Vec::new())
+                    .or_insert_with(Vec::new)
                     .push(conn.clone());
             }
 
