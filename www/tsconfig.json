@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "jsx": "react",
+        "jsxFactory": "h",
+        "strict": true,
+        "moduleResolution": "node",
+        "paths": {
+            "logic-circuit-simulator": ["../pkg/"]
+        }
+    }
+}
