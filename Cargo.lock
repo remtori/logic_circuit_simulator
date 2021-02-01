@@ -50,6 +50,7 @@ name = "logic_circuit_simulator"
 version = "0.1.0"
 dependencies = [
  "bitvec",
+ "serde",
  "wasm-bindgen",
 ]
 
@@ -76,6 +77,12 @@ name = "radium"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "643f8f41a8ebc4c5dc4515c82bb8abd397b527fc20fd681b7c011c2aee5d44fb"
+
+[[package]]
+name = "serde"
+version = "1.0.123"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "92d5161132722baa40d802cc70b15262b98258453e85e5d1d365c757c73869ae"
 
 [[package]]
 name = "syn"

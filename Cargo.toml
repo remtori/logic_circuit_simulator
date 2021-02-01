@@ -10,3 +10,4 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 bitvec = "0.20"
 wasm-bindgen = "0.2.49"
+serde = "1.0.123"
