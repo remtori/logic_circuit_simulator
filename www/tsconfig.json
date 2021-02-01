@@ -5,6 +5,7 @@
         "jsxFactory": "h",
         "strict": true,
         "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "paths": {
             "logic-circuit-simulator": ["../pkg/"]
         }
