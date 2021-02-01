@@ -1,0 +1,9 @@
+[package]
+name = "js-bindings"
+version = "0.1.0"
+authors = ["remtori <lqvu99@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+logic_circuit_simulator = { path = "../" }
+rusty_v8 = "0.16.0"
