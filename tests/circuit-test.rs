@@ -1,7 +1,7 @@
 #[cfg(test)]
 pub mod tests {
 
-    use logic_circuit_simulator::circuit::circuit::*;
+    use logic_circuit_simulator::circuit::*;
     const NAND_GATE: TID = 3;
     const OR_GATE: TID = 4;
 

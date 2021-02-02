@@ -1,5 +1,4 @@
-mod circuit;
-use circuit::circuit::*;
+use logic_circuit_simulator::circuit::*;
 
 fn main() {
     const NAND_GATE: TID = 3;
