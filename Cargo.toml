@@ -3,9 +3,14 @@ name = "logic_circuit_simulator"
 version = "0.1.0"
 authors = ["remtori <lqvu99@gmail.com>"]
 edition = "2018"
+license = "MIT"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "lcs"
+path = "src/main.rs"
 
 [dependencies]
 bitvec = "0.20"
