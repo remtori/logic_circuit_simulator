@@ -24,4 +24,14 @@
 
 ## Optimize
 
+- `BitVec` instead of `Vec<bool>`
+
 - Cache input as `u32` and only simulate internal if input changed
+
+## Commands
+
+- Build `wasm`
+
+```sh
+wasm-pack build -- --features wasm
+```
