@@ -1,7 +1,7 @@
 use logic_circuit_simulator::circuit::*;
 
 fn main() {
-    logic_circuit_simulator::initialize();
+    logic_circuit_simulator::initialize("DEBUG");
 
     let mut simulator = CircuitSimulator::default();
     let mut pins = [true, true, false];
