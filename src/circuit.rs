@@ -1,22 +1,23 @@
 use log::*;
 use std::collections::HashMap;
+use wasm_bindgen::prelude::*;
 
 pub type TID = u32; // Type Identifier
 pub type UID = u32; // Unique Identifier
 
-fn encode(bits: &[bool]) -> usize {
+fn encode(bits: &[u8]) -> usize {
     let mut result: usize = 0;
     for bit in bits {
-        result = (result << 1) + if *bit { 1 } else { 0 }
+        result = (result << 1) + (*bit as usize);
     }
 
     result
 }
 
-fn decode(mut value: usize, bits: &mut [bool]) {
+fn decode(mut value: usize, bits: &mut [u8]) {
     let mut bit_idx: usize = bits.len() - 1;
     loop {
-        bits[bit_idx] = (value & 1) == 1;
+        bits[bit_idx] = (value & 1) as u8;
 
         if bit_idx == 0 {
             break;
@@ -31,26 +32,28 @@ fn decode(mut value: usize, bits: &mut [bool]) {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug, Default)]
 pub struct CircuitSimulator {
     circuit_library: HashMap<TID, LogicCircuit>,
 }
 
-impl CircuitSimulator {
-    pub const AND_GATE: TID = 1;
-    pub const NOT_GATE: TID = 2;
+pub const AND_GATE: TID = 1;
+pub const NOT_GATE: TID = 2;
 
+#[wasm_bindgen]
+impl CircuitSimulator {
     pub fn default() -> CircuitSimulator {
         let mut circuit_library: HashMap<TID, LogicCircuit> = HashMap::new();
 
         circuit_library.insert(
-            CircuitSimulator::AND_GATE,
-            LogicCircuit::from_truth_table(CircuitSimulator::AND_GATE, 2, 1, vec![0, 0, 0, 1]),
+            AND_GATE,
+            LogicCircuit::from_truth_table(AND_GATE, 2, 1, vec![0, 0, 0, 1]),
         );
 
         circuit_library.insert(
-            CircuitSimulator::NOT_GATE,
-            LogicCircuit::from_truth_table(CircuitSimulator::NOT_GATE, 1, 1, vec![1, 0]),
+            NOT_GATE,
+            LogicCircuit::from_truth_table(NOT_GATE, 1, 1, vec![1, 0]),
         );
 
         CircuitSimulator { circuit_library }
@@ -60,11 +63,7 @@ impl CircuitSimulator {
         self.circuit_library.insert(circuit.tid, circuit);
     }
 
-    pub fn get_circuit(&self, tid: TID) -> Option<&LogicCircuit> {
-        self.circuit_library.get(&tid)
-    }
-
-    pub fn simulate_by_tid(&self, tid: TID, pins: &mut [bool], tick_count: u32) -> Context {
+    pub fn simulate_by_tid(&self, tid: TID, pins: &mut [u8], tick_count: u32) -> Context {
         self.simulate(self.get_unwrapped_circuit(tid), pins, tick_count)
     }
 
@@ -72,13 +71,13 @@ impl CircuitSimulator {
         &self,
         context: &mut Context,
         tid: TID,
-        pins: &mut [bool],
+        pins: &mut [u8],
         tick_count: u32,
     ) {
         self.simulate_with_context(context, self.get_unwrapped_circuit(tid), pins, tick_count)
     }
 
-    pub fn simulate(&self, circuit: &LogicCircuit, pins: &mut [bool], tick_count: u32) -> Context {
+    pub fn simulate(&self, circuit: &LogicCircuit, pins: &mut [u8], tick_count: u32) -> Context {
         assert_eq!(circuit.pin_count as usize, pins.len());
         let mut context = self.create_execution_context(&circuit);
         self.simulate_with_context(&mut context, circuit, pins, tick_count);
@@ -89,7 +88,7 @@ impl CircuitSimulator {
         &self,
         context: &mut Context,
         circuit: &LogicCircuit,
-        pins: &mut [bool],
+        pins: &mut [u8],
         tick_count: u32,
     ) {
         // TODO: A lot of duplicated code, clean up required
@@ -202,16 +201,17 @@ impl CircuitSimulator {
     }
 
     fn get_unwrapped_circuit(&self, tid: TID) -> &LogicCircuit {
-        match self.get_circuit(tid) {
+        match self.circuit_library.get(&tid) {
             Some(circuit) => circuit,
             None => panic!("Trying to get unregistered circuit type id: {}", tid),
         }
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug)]
 pub struct Context {
-    pins: Vec<bool>,
+    pins: Vec<u8>,
     offset_map: HashMap<UID, u32>,
     child_context: HashMap<UID, Context>,
 }
@@ -219,7 +219,7 @@ pub struct Context {
 impl Context {
     fn new(pin_count: u32, offset_map: HashMap<u32, u32>) -> Context {
         Context {
-            pins: vec![false; pin_count as usize],
+            pins: vec![0; pin_count as usize],
             offset_map,
             child_context: HashMap::new(),
         }
@@ -230,6 +230,7 @@ impl Context {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug, Copy, Clone)]
 pub struct Connection {
     input_uid: UID,
@@ -249,6 +250,7 @@ impl Connection {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug)]
 pub struct LogicCircuit {
     tid: TID,
@@ -260,6 +262,7 @@ pub struct LogicCircuit {
     connections: Vec<Connection>,
 }
 
+#[wasm_bindgen]
 impl LogicCircuit {
     pub fn new(type_id: TID, input_pin_count: u32, output_pin_count: u32) -> LogicCircuit {
         LogicCircuit {

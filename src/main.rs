@@ -4,28 +4,28 @@ fn main() {
     logic_circuit_simulator::initialize("DEBUG");
 
     let mut simulator = CircuitSimulator::default();
-    let mut pins = [true, true, false];
+    let mut pins = [1, 1, 0];
 
     // let and_gate = simulator.get_circuit(CircuitSimulator::AND_GATE).unwrap();
     // simulator.simulate(&and_gate, &mut pins, 1);
-    // assert!(pins.iter().eq([false, false, false].iter()));
+    // assert!(pins.iter().eq([0, 0, 0].iter()));
 
-    // pins = [true, false, true];
+    // pins = [1, 0, 1];
     // simulator.simulate(&and_gate, &mut pins, 1);
-    // assert!(pins.iter().eq([true, false, false].iter()));
+    // assert!(pins.iter().eq([1, 0, 0].iter()));
 
-    // pins = [false, true, true];
+    // pins = [0, 1, 1];
     // simulator.simulate(&and_gate, &mut pins, 1);
-    // assert!(pins.iter().eq([false, true, false].iter()));
+    // assert!(pins.iter().eq([0, 1, 0].iter()));
 
-    // pins = [true, true, false];
+    // pins = [1, 1, 0];
     // simulator.simulate(&and_gate, &mut pins, 1);
-    // assert!(pins.iter().eq([true, true, true].iter()));
+    // assert!(pins.iter().eq([1, 1, 1].iter()));
 
     const NAND_GATE: TID = 3;
     let mut nand_gate = LogicCircuit::new(NAND_GATE, 2, 1);
-    nand_gate.add(CircuitSimulator::AND_GATE);
-    nand_gate.add(CircuitSimulator::NOT_GATE);
+    nand_gate.add(AND_GATE);
+    nand_gate.add(NOT_GATE);
     nand_gate.add_connection(1, 0, 2, 0);
     nand_gate.add_connection(1, 1, 2, 1);
     nand_gate.add_connection(2, 2, 3, 0);
@@ -47,9 +47,9 @@ fn main() {
     or_gate.add_connection(3, 2, 4, 1);
     or_gate.add_connection(4, 2, 1, 2);
 
-    // pins = [true, false, false];
+    // pins = [1, 0, 0];
     // simulator.simulate(&or_gate, &mut pins, 1);
 
-    // pins = [true, false, true];
+    // pins = [1, 0, 1];
     // simulator.simulate_by_tid(CircuitSimulator::AND_GATE, &mut pins, 1);
 }
