@@ -1,8 +1,10 @@
 import { h, render } from 'preact';
-import * as wasm from 'logic-circuit-simulator';
 import { App } from './App';
 
-console.log(wasm.encode(new Uint8Array([1, 1, 1])));
-(window as any).r = wasm;
+const wasm = import('logic-circuit-simulator');
+wasm.then((m) => {
+	m.initialize('DEBUG');
+	(window as any).r = m;
+});
 
 render(h(App, null), document.body);
