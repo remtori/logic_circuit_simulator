@@ -2,19 +2,7 @@
     "presets": [
         [ "@babel/typescript", { "jsxPragma": "h" } ],
         [ "@babel/react", { "pragma": "h" } ],
-        [ "@babel/env", { "modules": false }]
+        [ "@babel/preset-env", { "targets": { "esmodules": true } }]
     ],
-    "plugins": [],
-    "env": {
-        "test": {
-            "presets": [
-                "@babel/react",
-                "@babel/typescript",
-                ["@babel/env", { "modules": "commonjs" }]
-            ],
-            "plugins": [
-                "@babel/plugin-transform-modules-commonjs"
-            ]
-        }
-    }
+    "plugins": []
 }
