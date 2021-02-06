@@ -49,10 +49,14 @@ module.exports = (env) => {
 			publicPath: '/',
 		},
 		resolve: {
-			extensions: ['.ts', '.tsx', '.js', '.jsx', '.css', '.scss'],
+			extensions: ['.ts', '.tsx', '.js', '.jsx'],
 		},
 		module: {
 			rules: [
+				{
+					test: /\.wasm$/,
+					type: 'webassembly/sync',
+				},
 				{
 					test: /\.(t|j)sx?$/,
 					exclude: /node_modules/,
@@ -107,7 +111,7 @@ module.exports = (env) => {
 			},
 		},
 		experiments: {
-			asyncWebAssembly: true,
+			syncWebAssembly: true,
 		},
 		devServer: {
 			contentBase: staticDir,
