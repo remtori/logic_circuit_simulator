@@ -22,6 +22,13 @@
 
     + Other straight-forward circuit can optimize by using truth table
 
+- [ ] For better `wasm` compatibility 
+
+    + We need to expose all mutable data in a few `TypedArray`
+
+    + Make the api only output `offset` to the data
+
+
 ## Optimize
 
 - `BitVec` instead of `Vec<bool>`
